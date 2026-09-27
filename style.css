@@ -1,0 +1,319 @@
+/* =====================================================
+   LOVE UNIVERSE — style.css
+   Palette (EDIT HERE if you want different colors):
+   background : #05020D / #090316 / #12051F
+   particles  : #FF69B4 #FF4FA3 #D946EF #F9A8D4 #FFFFFF
+   ===================================================== */
+
+:root{
+  --bg-1:#05020D;
+  --bg-2:#090316;
+  --bg-3:#12051F;
+  --pink:#FF69B4;
+  --magenta:#FF4FA3;
+  --purple:#D946EF;
+  --soft-pink:#F9A8D4;
+  --white:#FFFFFF;
+  --text-soft: rgba(255,255,255,0.85);
+  --text-dim: rgba(255,255,255,0.5);
+}
+
+*{ box-sizing:border-box; }
+
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;                 /* no scrolling, this is a "space" not a page */
+  background: radial-gradient(ellipse at 50% 30%, var(--bg-3), var(--bg-1) 70%);
+  font-family: 'Georgia', 'Cambria', serif;
+  color: var(--text-soft);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Canvas fills the whole screen, sits behind every UI layer */
+#universe-canvas{
+  position:fixed;
+  top:0; left:0;
+  width:100%;
+  height:100%;
+  display:block;
+  z-index:1;
+}
+
+/* =====================================================
+   SCENE 1 — THE VOID
+   ===================================================== */
+.scene-void{
+  position:fixed;
+  inset:0;
+  z-index:5;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 24px;
+  transition: opacity 1.6s ease;
+}
+.scene-void.fade-out{
+  opacity:0;
+  pointer-events:none;
+}
+.void-content{
+  text-align:center;
+  max-width: 90vw;
+  transition: opacity 1s ease, transform 1s ease;
+}
+.void-content.fade-out{
+  opacity:0;
+  transform: translateY(-16px) scale(0.98);
+}
+.void-subtitle{
+  letter-spacing: 0.35em;
+  font-size: 0.75rem;
+  color: var(--soft-pink);
+  margin: 0 0 18px 0;
+  opacity:0.8;
+}
+.void-title{
+  font-size: clamp(1.4rem, 5vw, 2.4rem);
+  font-weight: 400;
+  font-style: italic;
+  color: #fdf2f8;
+  margin: 0 0 40px 0;
+  line-height: 1.5;
+  text-shadow: 0 0 30px rgba(255,105,180,0.35);
+}
+
+.btn-enter{
+  font-family: inherit;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  padding: 16px 30px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,169,212,0.55);
+  background: linear-gradient(180deg, rgba(255,105,180,0.18), rgba(217,70,239,0.10));
+  color: #ffe9f5;
+  cursor:pointer;
+  box-shadow: 0 0 24px rgba(255,105,180,0.25), inset 0 0 12px rgba(255,255,255,0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  -webkit-appearance:none;
+}
+.btn-enter span{ display:inline-block; margin-left:4px; }
+.btn-enter:active{
+  transform: scale(0.96);
+  box-shadow: 0 0 34px rgba(255,105,180,0.45);
+}
+@media (hover:hover){
+  .btn-enter:hover{
+    background: linear-gradient(180deg, rgba(255,105,180,0.3), rgba(217,70,239,0.18));
+    box-shadow: 0 0 34px rgba(255,105,180,0.45);
+  }
+}
+
+/* =====================================================
+   HUD (music + zoom out)
+   ===================================================== */
+.hud{
+  position:fixed;
+  top: max(16px, env(safe-area-inset-top));
+  right: 16px;
+  z-index:20;
+  display:flex;
+  gap:10px;
+  transition: opacity 0.8s ease;
+}
+.hud.hidden{ opacity:0; pointer-events:none; }
+
+.hud-btn{
+  font-family: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(18,5,31,0.55);
+  backdrop-filter: blur(6px);
+  color: var(--text-soft);
+  cursor:pointer;
+}
+.hud-btn:active{ transform: scale(0.95); }
+.hud-btn.active{
+  border-color: var(--pink);
+  color: #ffe9f5;
+  box-shadow: 0 0 14px rgba(255,105,180,0.4);
+}
+
+.hint-text{
+  position:fixed;
+  bottom: max(22px, env(safe-area-inset-bottom));
+  left:50%;
+  transform: translateX(-50%);
+  z-index:20;
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  color: var(--text-dim);
+  text-align:center;
+  width: 92vw;
+  transition: opacity 1s ease;
+}
+.hint-text.hidden{ opacity:0; }
+
+/* generic hidden helper */
+.hidden{ display:none !important; }
+
+/* =====================================================
+   PLANET INFO PANEL
+   ===================================================== */
+.planet-panel{
+  position:fixed;
+  inset:0;
+  z-index:30;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 20px;
+  background: rgba(5,2,13,0.55);
+  backdrop-filter: blur(4px);
+  opacity:0;
+  transition: opacity 0.5s ease;
+}
+.planet-panel.show{ opacity:1; }
+
+.panel-card{
+  position:relative;
+  width:100%;
+  max-width: 420px;
+  max-height: 82vh;
+  overflow-y:auto;
+  background: linear-gradient(160deg, rgba(30,8,48,0.92), rgba(9,3,22,0.96));
+  border: 1px solid rgba(255,169,212,0.25);
+  border-radius: 22px;
+  padding: 30px 24px 26px;
+  text-align:center;
+  box-shadow: 0 0 60px rgba(217,70,239,0.25);
+  transform: scale(0.9) translateY(10px);
+  transition: transform 0.5s cubic-bezier(.2,.9,.3,1.2);
+}
+.planet-panel.show .panel-card{ transform: scale(1) translateY(0); }
+
+.btn-close{
+  position:absolute;
+  top:12px; right:12px;
+  font-family: inherit;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.05);
+  color: var(--text-soft);
+  cursor:pointer;
+}
+.btn-close:active{ transform: scale(0.94); }
+
+.panel-visual{
+  width: 100%;
+  height: 130px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom: 14px;
+}
+
+.panel-title{
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  color: #ffe9f5;
+  margin: 0 0 14px 0;
+}
+.panel-text{
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--text-soft);
+  white-space: pre-line;
+  margin:0;
+}
+.panel-extra{ margin-top: 16px; }
+
+/* memory mini-cards inside the Memories planet panel */
+.memory-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 6px;
+}
+.memory-card{
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 8px;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+.memory-card img{
+  width:100%;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  background: rgba(255,255,255,0.06);
+}
+
+/* =====================================================
+   FINAL SCENE
+   ===================================================== */
+.final-scene{
+  position:fixed;
+  inset:0;
+  z-index:40;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap: 22px;
+  padding: 20px;
+  text-align:center;
+  background: radial-gradient(ellipse at 50% 50%, rgba(217,70,239,0.08), rgba(5,2,13,0.92) 70%);
+}
+.final-line{
+  font-size: clamp(1rem, 4vw, 1.5rem);
+  font-style: italic;
+  color: #fdf2f8;
+  opacity:0;
+  transform: translateY(10px);
+  transition: opacity 1.4s ease, transform 1.4s ease;
+  max-width: 90vw;
+}
+.final-line.show{ opacity:1; transform: translateY(0); }
+.final-end{
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  opacity:0;
+  transition: opacity 1.4s ease;
+  margin-top: 10px;
+}
+.final-end.show{ opacity:1; }
+.final-restart{
+  opacity:0;
+  transition: opacity 1.2s ease;
+}
+.final-restart.show{ opacity:1; }
+
+/* =====================================================
+   REDUCED MOTION
+   ===================================================== */
+@media (prefers-reduced-motion: reduce){
+  .scene-void, .void-content, .hud, .hint-text,
+  .planet-panel, .panel-card, .final-line, .final-end, .final-restart{
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* small-screen text sizing so nothing feels cramped */
+@media (max-width: 380px){
+  .panel-title{ font-size: 1rem; }
+  .panel-text{ font-size: 0.88rem; }
+}

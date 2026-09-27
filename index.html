@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>LOVE UNIVERSE ✦</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💗</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============================================= -->
+  <!-- CANVAS: seluruh partikel, orbit, planet, hati  -->
+  <!-- digambar di sini oleh script.js                -->
+  <!-- ============================================= -->
+  <canvas id="universe-canvas"></canvas>
+
+  <!-- ============================================= -->
+  <!-- SCENE 1 — THE VOID                             -->
+  <!-- ============================================= -->
+  <section id="scene-void" class="scene-void">
+    <div class="void-content">
+      <p class="void-subtitle">✦ &nbsp; a little universe &nbsp; ✦</p>
+      <h1 class="void-title">Welcome to our little universe.</h1>
+      <!-- EDIT HERE: ganti nama/kalimat pembuka di atas jika mau -->
+      <button id="enter-btn" class="btn-enter">ENTER OUR UNIVERSE <span>✦</span></button>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- HUD: muncul setelah tata surya selesai         -->
+  <!-- ============================================= -->
+  <div id="hud" class="hud hidden">
+    <button id="music-btn" class="hud-btn" aria-label="Toggle music">🎵 Music</button>
+    <button id="zoomout-btn" class="hud-btn" aria-label="Zoom out">ZOOM OUT ✦</button>
+  </div>
+
+  <!-- hint kecil di layar saat tata surya baru selesai -->
+  <div id="hint-text" class="hint-text hidden">tap a planet to explore · tap ✦ LOVE to open a secret</div>
+
+  <!-- ============================================= -->
+  <!-- PLANET INFO PANEL (dipakai ulang oleh semua planet) -->
+  <!-- ============================================= -->
+  <div id="planet-panel" class="planet-panel hidden">
+    <div class="panel-card">
+      <button id="panel-close" class="btn-close">CLOSE ✕</button>
+      <div id="panel-visual" class="panel-visual"></div>
+      <h2 id="panel-title" class="panel-title"></h2>
+      <p id="panel-text" class="panel-text"></p>
+      <div id="panel-extra" class="panel-extra"></div>
+    </div>
+  </div>
+
+  <!-- ============================================= -->
+  <!-- FINAL SCENE: heart galaxy + closing message    -->
+  <!-- ============================================= -->
+  <div id="final-scene" class="final-scene hidden">
+    <p class="final-line" id="final-line-1">Di alam semesta yang begitu luas...</p>
+    <p class="final-line" id="final-line-2">aku cuma ingin punya satu semesta kecil...</p>
+    <p class="final-line" id="final-line-3">yang isinya kita. 💗</p>
+    <p class="final-end" id="final-end">THE END...?</p>
+    <button id="restart-btn" class="btn-enter final-restart">START AGAIN ↻</button>
+  </div>
+
+  <!-- musik latar, tidak autoplay -->
+  <audio id="bg-music" src="music.mp3" loop preload="none"></audio>
+  <!-- EDIT HERE: ganti assets/music.mp3 dengan file musikmu -->
+
+  <script src="script.js"></script>
+</body>
+</html>
